@@ -28,7 +28,7 @@ You can find starter code created by the Udacity on [here](https://github.com/ud
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-  * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
+    * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
 4. Run it: `./ExtendedKF`
 5. Run Simulator with Project 1/2: EKF and UKF
 6. Select Dataset1 or Datset2
