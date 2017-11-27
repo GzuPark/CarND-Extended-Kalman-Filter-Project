@@ -139,9 +139,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   previous_timestamp_ = measurement_pack.timestamp_;
 
   // avoid duplicated calculation
-  float dt_2 = dt * dt;
-  float dt_3 = dt_2 * dt;
-  float dt_4 = dt_3 * dt;
+  const float dt_2 = dt * dt;
+  const float dt_3 = dt_2 * dt;
+  const float dt_4 = dt_3 * dt;
 
   // set F matrix
   ekf_.F_(0, 2) = dt;

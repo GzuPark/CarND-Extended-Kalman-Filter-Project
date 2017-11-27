@@ -3,7 +3,7 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-// Please note that the Eigen library does not initialize 
+// Please note that the Eigen library does not initialize
 // VectorXd or MatrixXd objects with zeros upon creation.
 
 KalmanFilter::KalmanFilter() {}
@@ -36,16 +36,20 @@ void KalmanFilter::Update(const VectorXd &z) {
     * update the state by using Kalman Filter equations
   */
   VectorXd y_ = z - H_ * x_;
-  
+
   MatrixXd H_trans = H_.transpose();
   MatrixXd S_ = H_ * P_ * H_trans + R_;
   MatrixXd S_inv = S_.inverse();
   MatrixXd K_ = P_ * H_trans * S_inv;
-  
+
   x_ = x_ + (K_ * y_);
   int x_size = x_.size();
-  MatrixXd I_ = MatrixXd::Identity(x_size, x_size);
-  P_ = (I_ - K_ * H_) * P_;
+  //MatrixXd I_ = MatrixXd::Identity(x_size, x_size);
+  P_ -= K_ * H_ * P_;
+}
+
+void NormalizeAngle(double& phi) {
+  phi = atan2(sin(phi), cos(phi));
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
@@ -55,24 +59,28 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   */
   float rho = sqrt(x_(0) * x_(0) + x_(1) * x_(1));
   float phi = atan2(x_(1), x_(0));
+  if (x_(1) == 0 and x_(0) == 0) {
+    phi = 0.000001;
+  }
   float rho_dot;
+  // avoid division by zero
   if (fabs(rho) < 0.0001) {
     rho_dot = 0;
   } else {
     rho_dot = (x_(0) * x_(2) + x_(1) * x_(3)) / rho;
   }
-  
+
   VectorXd z_prime(3);
   z_prime << rho, phi, rho_dot;
   VectorXd y_ = z - z_prime;
-  
+  NormalizeAngle(y_(1));
+
   MatrixXd H_trans = H_.transpose();
   MatrixXd S_ = H_ * P_ * H_trans + R_;
   MatrixXd S_inv = S_.inverse();
   MatrixXd K_ = P_ * H_trans * S_inv;
-  
+
   x_ = x_ + (K_ * y_);
   int x_size = x_.size();
-  MatrixXd I_ = MatrixXd::Identity(x_size, x_size);
-  P_ = (I_ - K_ * H_) * P_;
+  P_ -= K_ * H_ * P_;
 }

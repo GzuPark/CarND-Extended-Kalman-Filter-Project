@@ -37,10 +37,8 @@ You can find starter code created by the Udacity on [here](https://github.com/ud
 ## Result
 ![Dataset 1][image1]
 
-RMSE for Dataset 1: [0.1395, 0.6662, 0.5932, 1.6221]
+RMSE for Dataset 1: [0.0973, 0.0855, 0.4513, 0.4399]
 
 ![Dataset 2][image2]
 
-RMSE for Dataset 2: [0.0728, 0.0967, 0.4433, 0.5320]
-
-As you can see above, Velocity of Y in Dataset 1 shows huge RMSE score. Obviously, you can find weird green points on the image.
+RMSE for Dataset 2: [0.0726, 0.0965, 0.4216, 0.4932]
